@@ -10,7 +10,7 @@ def handle_client(client_socket):
         filename = headers[0].split()[1]
 
         if filename == '/':
-            filename = '/HelloWorld.html'
+            filename = '/Hello.html'
 
         filepath = os.getcwd() + filename
 
@@ -34,7 +34,7 @@ def handle_client(client_socket):
 
 def main():
     server_ip = '0.0.0.0'
-    server_port = 6789
+    server_port = 7000
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((server_ip, server_port))
     server.listen(5)
