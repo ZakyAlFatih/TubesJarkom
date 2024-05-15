@@ -5,6 +5,6 @@ For Running the program u can follow instruction bellow:
 
 OR
 
-browser
+- on browser
 
 http://127.0.0.1:6789/Hello.html
