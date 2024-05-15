@@ -38,11 +38,11 @@ def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((server_ip, server_port))
     server.listen(5)
-    print(f"[*] Listening on {server_ip}:{server_port}")
+    print(f"Listening on {server_ip}:{server_port}")
 
     while True:
         client_socket, addr = server.accept()
-        print(f"[*] Accepted connection from {addr}")
+        print(f"Accepted connection from {addr}")
         client_handler = threading.Thread(target=handle_client, args=(client_socket,))
         client_handler.start()
 
