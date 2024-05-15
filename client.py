@@ -30,7 +30,7 @@ def http_client(server_host, server_port, filename):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: python client.py <server_host> <server_port> <filename>")
+        print("Please use this command line format on your terminal: python client.py <server_host> <server_port> <filename>")
         sys.exit(1)
 
     server_host = sys.argv[1]
