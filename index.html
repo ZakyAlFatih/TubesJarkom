@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> NE: News Extractor </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+        body{
+            font-family: "Poppins",sans-serif;
+        }
+
+        a,a:hover{
+            text-decoration: none;
+        }
+        .top-bar{
+
+            display:flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            background: #fff;
+        }
+        .top-bar span{
+            color: #cb2424;
+        }
+        .top-bar ul{
+            list-style: none;
+            display: flex;
+        }
+        .top-bar li{
+            margin: 0px 5px;
+        }
+        .top-bar a{
+            color : #cb2424; 
+        }
+        .top-bar a:hover{
+            color: #810a0a;
+        }
+        nav{
+            background: #cb2424;
+            padding: 5px 20px;
+            display: flex;
+            align-items: center;
+        }
+        nav a{
+            color: #fff
+        }
+        nav a:hover{
+            color: #810a0a;
+        }
+        form {
+            width: 40%;
+            padding: 20px 40px 40px 60px;
+            border-radius: 8px;
+            margin: 30px auto;
+            float : center;
+            border: 5px solid #810a0a;
+            box-shadow: 4px 2px 3px 1px darkgray;
+        }
+        input[type = "file"]{
+            display:none;
+        }
+
+        label[for="uploadBtn"] {
+            margin-bottom: 20px;
+            display: inline-block;
+            text-transform: uppercase;
+            color: #fff;
+            background: #cb2424;
+            text-align: center;
+            padding: 10px 10px;
+            font-size: 18px;
+            letter-spacing: 1.5px;
+            user-select: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        label[for="uploadBtn"]  i{
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        label[for="uploadBtn"] :active{
+            margin-bottom: 10px;
+            transform: scale(0.9);
+        }
+        label[for="uploadBtn"]:hover {  
+            background-color: #810a0a;
+            box-shadow: 1px 4px 4px darkgray;
+        }
+        input[type=text] {
+            width: 70%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+            padding: 12px 12px 12px 12px;
+            margin-bottom:8px ; 
+            transition-duration: 0.2s;
+        }
+
+        input[type=text]:focus {
+            border: 2px solid teal;
+            box-shadow: 1px 2px 3px teal;
+        }
+
+        input[type=text]:hover {
+            border: 2px solid teal;
+        }
+
+
+        .generalCont {
+            width: 80%;
+            padding: 20px 40px 40px 40px;
+            border-radius: 8px;
+            border: 1px solid teal;
+            margin: 50px auto;
+            float : center;
+        }
+
+        .creditsCont {
+            width: 100%;
+            padding: 5px 0px 20px 0px;
+            border: 1px solid teal;
+            margin-top: 60px;
+            left : 0px;
+            bottom : 0px;
+            float : center;
+            background-color: teal;
+        }
+
+
+        .button1{
+            background-color: #cb2424;
+            padding: 12px;
+            width : 30%;
+            color : white;
+            border-width: 0;
+            border-radius: 4px;
+            margin : auto;
+            display: block;
+            transition-duration: 0.2s;
+            cursor: pointer;
+        }
+
+        .button1:hover {
+            background-color: #810a0a;
+            box-shadow: 1px 4px 4px darkgray;
+        }
+
+        .container {
+            display: block;
+            position: relative;
+            padding-left:30px;
+            margin-bottom: 12px;
+            width: 40%;
+            cursor: pointer;
+            font-size: 14px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+        
+
+        .container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+        
+        .container input:checked ~ .checkmark {
+            background-color: #810a0a;
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .container .checkmark:after {
+            top: 6px;
+            left: 6px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
+
+        h1{
+            color : #cb2424;
+            font-weight:bold;
+        }
+
+        .logo{
+            flex:1;
+        }
+        .logo a{
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+        }
+        .logo a:hover{
+            color: #810a0a;
+        }
+        .logo2 img{
+            width: 120px;
+            margin-top: 15px;
+
+        }
+        .logo2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo img{
+            width:120px;
+            margin-right: 10px;
+        }
+        .menu{
+            display: flex;
+            align-items: center;
+            list-style:none ;
+        }
+        .menu li{
+            padding: 15px 10px;
+            font-size:16px;
+        }
+        .toggle{
+            font-size: 30px;
+            display: none;
+        }
+        @media screen and (max-width:600px){
+            nav{
+                display:block;
+                position:relative;
+                padding: 15px 20px;
+            }
+            .menu{
+                margin-top: 15px;
+                display: none;
+            }
+            .menu.active, .toggle{
+                display : block;
+            }
+            .toggle{
+                position: absolute;
+                top: 15px;
+                right: 10px;
+            }
+        }
+        input[type = "file"]{
+            display:none;
+        }
+
+        label li{
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        label:active{
+            transform: scale(0.9);
+        }
+        .center {
+            text-align: center;
+
+        }
+
+        .cover{
+            width: 90%;
+            height: 400px;
+            margin: 50px auto;
+            display: flex;
+        }
+
+        .box{
+            margin: 10px;;
+            width: 800px;
+            height: 450px;
+            box-shadow:-1px 0 10px darkgray ;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 5px solid #810a0a;
+            /*background-color: black;*/
+        }
+        .box img{
+        width: 300px;
+        margin: 0 auto;
+        height: 200px; 
+        display: block;
+        align-items: center;
+        }
+
+        .box:hover {
+            box-shadow: 6px 4px 4px darkgray;
+            border: 5px solid #111;
+
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 60px;
+            justify-content: center; 
+            align-items: center; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            justify-content: center; 
+            align-items: center; 
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .close {
+            color: #d32f2f;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #810a0a;
+            text-decoration: none;
+            cursor: pointer;
+            animation: wave 0.5s ease-in-out; 
+        }
+
+        
+        .modal-box-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; 
+            padding: 20px;
+            background-color: #f2f2f2; 
+        }
+        
+        /* Box modal */
+        .modal-box {
+            width: 48%;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            background: linear-gradient(145deg, #cb2424, #810a0a); 
+            color: #fff;
+            justify-content: center; 
+            align-items: center; 
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .modal-box:hover {
+            transform: translateY(-10px); 
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+            .imgpop{
+                width: 170px;
+                height: 150px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+        }
+
+        #ajakan {
+            background-color: #bc332b; 
+            padding: 40px;
+            text-align: center;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            max-width: 900px;
+            margin: 100px auto 100px auto; 
+        }
+
+        #ajakan h1 {
+            color: white;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: bold;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .gambar-ajakan {
+            width: 20%; 
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        #ajakan p {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: justify; 
+        }
+
+        .testimoni {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1000px; 
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px; 
+            color: #333; 
+            justify-content: center; 
+
+        }
+
+        .testimoni header {
+            text-align: center;
+            margin-bottom: 30px; 
+        }
+
+        .testimoni header h2 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 36px; 
+            margin-bottom: 10px;
+            color: #bc332b; 
+        }
+
+        .testimoni header p {
+            font-size: 20px; 
+            color: #777;
+        }
+
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+        }
+
+        @media (min-width: 800px) {
+            .content-container {
+                flex-direction: row;
+            }
+        }
+
+        .bio-container, .contact-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            color: #333; 
+        }
+
+        .bio-container h3, .contact-container h3 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #bc332b;
+        }
+
+        .bio-container figure {
+            display: flex;
+            justify-content: center;
+            margin: 0 0 20px 0;
+        }
+
+        .testimoni .user-image {
+            width: 200px; 
+            height: 200px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .biodata-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-size: 18px; 
+        }
+
+        .biodata-table th,
+        .biodata-table td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .biodata-table th {
+            background-color: #e0e0e0;
+            font-weight: bold;
+            width: 150px;
+        }
+
+        .biodata-table td {
+            background-color: #fff;
+        }
+
+        .contact-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-size: 18px; 
+            border-radius: 10px;
+        }
+
+        .contact-table th,
+        .contact-table td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .contact-table th {
+            background-color: #e0e0e0;
+            font-weight: bold;
+            width: 150px;
+        }
+
+        .contact-table td {
+            background-color: #fff;
+        }
+
+        .ayodaftar{
+            text-align: center;
+            align-items: center;
+        }
+        footer{
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #810a0a;
+            height: auto;
+            width: 100vw;
+            padding-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .footer-content h3{
+            font-size: 2.1rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            line-height: 3rem;
+        }
+        .footer-content p{
+            max-width: 600px;
+            margin: 10px auto;
+            line-height: 28px;
+            font-size: 18px;
+            color:white;
+        }
+
+        .footer-bottom{
+            background: #640909;
+            width: 100vw;
+            padding: 20px;
+            padding-bottom: 40px;
+            text-align: center;
+        }
+        .footer-bottom p{
+            float: left;
+            font-size: 14px;
+            word-spacing: 2px;
+            text-transform: capitalize;
+            color: white;
+        }
+        .footer-bottom p a{
+        color:#44bae8;
+        font-size: 16px;
+        text-decoration: none;
+        }
+        .footer-bottom span{
+            text-transform: uppercase;
+            opacity: .4;
+            font-weight: 200;
+        }
+        .footer-menu{
+        float: right;
+
+        }
+        .footer-menu ul{
+        display: flex;
+        }
+        .footer-menu ul li{
+            padding-right: 10px;
+            display: block;
+        }
+        .footer-menu ul li a{
+        color: white;
+        text-decoration: none;
+        }
+        .footer-menu ul li a:hover{
+        color: #27bcda;
+        }
+
+
+    </style>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="top-bar">
+        <span><ion-icon name="call-outline"></ion-icon>KELOMPOK 1 - JARKOM - IF-46-02</a></span>
+        <ul>
+            <li><ion-icon name="logo-facebook"></ion-icon></a></li>
+            <li><ion-icon name="logo-twitter"></ion-icon></a></li>
+            <li><ion-icon name="logo-instagram"></ion-icon></a></li>
+        </ul>
+    </div>
+<nav>
+    <div class="toggle">
+        <a href ="#"><ion-icon name="menu-outline"></ion-icon></a>
+    </div>
+    <a href ="#"></a>
+    <ul class="menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Info</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(function(){
+        $(".toggle").on("click",function(){
+            if ($(".menu").hasClass("active")){
+                $(".menu").removeClass("active");
+                $(this).find("a").html("");
+                $(this).find("a").html("<ion-icon name='menu-outline'></ion-icon>")
+            }else{
+                $(".menu").addClass("active");
+                $(this).find("a").html("<ion-icon name='close-outline'></ion-icon>")
+            }
+        })
+    })
+</script>
+    <div class="logo2">
+        <a href="#"><img src="/img/NEWS.png"/></a>
+    </div>
+    <a name = "home"></a>
+    <h1 class = "center">
+        EKSTRAKSI INFORMASI PADA ARTIKEL BERITA ANDA
+    </h1>
+    <form action="#results" method="POST" id = "boxshadow">
+        <p>
+            Select file(s):&ensp;
+            <input type="file" id="uploadBtn" name="file">
+            <input type ="text" id ="fileContent" hidden>
+            <label for="uploadBtn"><i class="fa-solid fa-upload"></i>Upload File</label>
+            <span id="fileName"></span>
+        </p>
+                  
+           
+        <input type="file" name="filename" multiple placeholder="Enter a keyword">
+        <p>Keyword &ensp;&ensp;: &ensp;
+        <input type="text" id="keyword" name="keyword" placeholder="Enter a keyword">
+        <br/>
+        </p>
+
+        <p>Select Algorithm :</p>
+        <label class = "container">Brute Force
+            <input type="radio" id="bf" name = "algorithm" value="bf">
+            <span class="checkmark"></span>
+        </label>
+
+        <label class = "container">Knuth-Morris-Pratt
+            <input type="radio" id="kmp" name = "algorithm" value="kmp">
+            <span class="checkmark"></span>
+        </label>
+        <button class = "button1" id ="submit" value="submit"><b>EXTRACT!</b></button>
+    </form>
+    <!--Untuk output-->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1 class = "center">Hasil Ekstraksi Informasi Berita</h1>
+            <div class="modal-box-container">
+                <div id="input-info" class="modal-box"></div>
+                <div id="output-info" class="modal-box"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileName = document.getElementById('fileName');
+        const fileContent = document.getElementById('fileContent');
+
+        uploadBtn.addEventListener('change', function () {
+        const selectedFile = this.files[0];
+
+        // Validate file type (only accept plain text files)
+        if (!selectedFile || !selectedFile.type.match('text/plain')) {
+            alert('TOLONG MASUKKAN FILE YANG VALID!!!');
+            return;
+        }
+        fileName.textContent = selectedFile.name;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            fileContent.value = e.target.result;
+        };
+
+        reader.readAsText(selectedFile);
+        });
+
+        const form = document.getElementById('submit');
+
+        form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        const keywordInput = document.getElementById('keyword').value.trim();
+        const algoritma = document.querySelector('input[name="algorithm"]:checked').value;
+        console.log(algoritma);
+
+        if (!keywordInput || !algoritma) {
+            alert('MASUKKAN DATA SESUAI DENGAN YANG DIMINTA !!!!');
+            return false;
+        }
+
+        // Replace with your server URL
+        const url = 'http://localhost:7000/extract';
+
+        // Prepare data for AJAX request
+        const data = {
+            fileContent: fileContent.value,
+            keyword: keywordInput,
+            algorithm: algoritma,
+        };
+
+        // Send AJAX request
+        $.ajax({
+            url,
+            type: 'POST',
+            data,
+            success: function (response) {
+            // Update results container with server's response (HTML)
+            $("#results").html(response);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error:", textStatus, errorThrown);
+            $("#results").html("An error occurred. Please try again.");
+            }
+        });
+    });
+
+    </script>
+    
+    <!--Untuk penjelasan KMP vs BF-->
+    <h1 class = "center">
+        Brute force VS Knuth-Morris-Pratt
+    </h1>
+    <h1 class="center">
+        In News Extractor
+    </h1>
+    <div class="cover">
+        <div class="box">
+            <h2>Brute force</h2>
+            <img src="/img/BF2.jpeg"/>
+            <p>
+                Brute  Force bergerak secara linear melalui teks, membandingkan 
+                pola dengan setiap substring pada teks. Jika cocok, pola ditemukan. 
+                Kelemahannya, Brute Force tidak efisien untuk teks panjang karena banyak
+                perbandingan yang tidak perlu
+            </p>
+        </div>
+        <div class="box">
+            <h2>
+                News Extractor (NE)
+            </h2>
+            <img src="/img/NEWS.png"/>
+            <p>
+                NE merupakan proses dalam mengidentifikasi dan mengekstraksi informasi 
+                penting dari artikel berita. Informasi ini dapat berupa entitas seperti orang,
+                tempat, organisasi, tanggal, dan peristiwa. Dalam hal ini, kita memanfaatkan
+                2 algoritma string matching pattern dalam melakukan ekstraksi informasi berita.
+            </p>  
+        </div>
+        <div class="box">
+            <h2>Knuth-Morris-Pratt</h2>
+            <img src="/img/KMP2.png"/>
+            <p>Knuth-Morris-Pratt menggunakan tabel preproses yang berisi informasi tentang
+                pola. Saat bergerak melalui teks, KMP menggunakan tabel ini untuk melompat ke
+                bagian teks yang mungkin cocok dengan pola, sehingga lebih efisien dan mengurangi
+                perbandingan yang tidak perlu.
+            </p>  
+        </div>
+    </div>
+    <div class="content2">
+        <article id ="ajakan">
+            <h1>Tentang Aplikasi Ini</h1>
+            <a href="#"><img src="img/icon.png" alt="Ajakan" class = "gambar-ajakan"/></a>
+            <p>
+                Selamat datang di aplikasi <b>NE</b>: aplikasi ekstraksi informasi berita! Aplikasi ini dirancang untuk membantu Anda menemukan informasi penting dari teks berita dengan mudah dan cepat.
+                Aplikasi ini memungkinkan Anda untuk mengunggah file teks berita dalam format .txt dan memilih salah satu dari dua algoritma pencarian yang kuat: brute force dan Knuth-Morris-Pratt. Masukkan kata kunci yang ingin Anda cari, dan aplikasi akan mengekstrak semua informasi yang relevan dari file teks berita. Hasil ekstraksi disajikan dengan rapi dan mudah dibaca, sehingga Anda dapat dengan cepat menemukan informasi yang Anda butuhkan.
+                Aplikasi ini dibangun menggunakan kombinasi teknologi web yang umum digunakan, yaitu HTML, CSS, dan JavaScript. Arsitektur klien-server memungkinkan aplikasi untuk berjalan di browser web apa pun dan memberikan pengalaman pengguna yang mulus.
+            </p>  
+            <p class = "ayodaftar">
+                <b><a href="#" >COBA DI SINI!</a></b>
+            </p>        
+        </article>
+    </div>  
+    <article class="testimoni">
+        <section>
+            <div class="bio-container">
+                <h3>INFORMASI KELOMPOK</h3>
+                <figure>
+                    <img src="img/happy.jpg" alt="Kira Yoshikage" class="user-image"/>
+                </figure>
+                <table class="biodata-table">
+                    <tr>
+                        <th>Kelas</th>
+                        <td>: IF-46-02</td>
+                    </tr>
+                    <tr>
+                        <th>Kelompok</th>
+                        <td>: Kelompok 1</td>
+                    </tr>
+                    <tr>
+                        <th>Anggota 1</th>
+                        <td>: Joshua Pinem (1301223051)</td>
+                    </tr>
+                    <tr>
+                        <th>Anggota 2</th>
+                        <td>: Zaky Al Fatih Nata Imam (1301223172) </td>
+                    </tr>
+                    <tr>
+                        <th>Anggota 3</th>
+                        <td>: Rayhan Dhika Setiawan (1301220395)</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="contact-container">
+                <h3>Informasi Mata Kuliah</h3>
+                <table class="contact-table">
+                    <tr>
+                        <th>Nama Mata Kuliah</th>
+                        <td>: Jaringan Komputer</td>
+                    </tr>
+                    <tr>
+                        <th>Kode Mata Kuliah</th>
+                        <td>: CII2J4</td>
+                    </tr>
+                    <tr>
+                        <th>Jumlah SKS </th>
+                        <td>: 4 SKS</td>
+                    </tr>
+                    <tr>
+                        <th>Nama Dosen Pengampu</th>
+                        <td>: Ananda Fitri Karimah,M.Kom. (NDB)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </article>   
+</body>
+<footer>
+    <div class="footer-content">
+        <h3>NE: News Extractor</h3>
+        <p>It has often been said that a person does not really understand something until he teaches it to someone else. Actually a person does not really understand something until he can teach it to a computer, i.e. express it as an algorithm… The attempt to formalize things as algorithms leads to a much deeper understanding than if we simply try to comprehend things in the traditional way. </p>
+        <p>(Donald E. Knuth)</p>
+    </div>
+    <div class="footer-bottom">
+        <p>copyright &copy; <a href="#">KELOMPOK 1 - JARKOM - IF-46-02 </a>  </p>
+                <div class="footer-menu">
+                  <ul class="f-menu">
+                    <li><a href="">Home</a></li>
+                    <li><a href="">About</a></li>
+                    <li><a href="">Profile</a></li>
+                    <li><a href="">Info</a></li>
+                    <li><a href="">Contact</a></li>
+                  </ul>
+                </div>
+    </div>
+</footer>
+</html>
